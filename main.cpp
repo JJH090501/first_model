@@ -1,29 +1,19 @@
 #include <iostream>
-#include "WordChain.hpp"
+#include <string>
+
+std::string firstUtf8Char(const std::string& str);
+std::string lastUtf8Char(const std::string& str);
 
 int main() {
-    WordChain ai;
-
-    std::cout << "끝말잇기 AI\n";
-    std::cout << "단어를 입력하세요. /quit으로 종료\n\n";
-
     std::string word;
 
-    while (true) {
-        std::cout << "You: ";
-        std::cin >> word;
+    std::cout << "단어 입력: ";
+    std::cin >> word;
 
-        if (word == "/quit") {
-            break;
-        }
+    std::cout << "입력: " << word << '\n';
+    std::cout << "바이트 수: " << word.size() << '\n';
+    std::cout << "첫 글자: " << firstUtf8Char(word) << '\n';
+    std::cout << "마지막 글자: " << lastUtf8Char(word) << '\n';
 
-        if (!ai.knows(word)) {
-            std::cout << "AI: 나는 아직 \"" << word << "\"를 몰라.\n";
-            std::cout << "AI에게 이 단어를 가르쳐 주세요.\n";
-            ai.learn(word);
-            continue;
-        }
-
-        std::cout << "AI: 배운 단어야!\n";
-    }
+    return 0;
 }
