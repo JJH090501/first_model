@@ -1,5 +1,6 @@
 #include "WordChain.hpp"
 
+#include <fstream>
 #include <string>
 
 std::string firstUtf8Char(const std::string& str) {
@@ -85,4 +86,34 @@ std::string WordChain::findNext(const std::string& word) const {
     }
 
     return it->second.front();
+}
+
+void WordChain::load(const std::string& filename) {
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        return;
+    }
+
+    std::string word;
+
+    while (std::getline(file, word)) {
+        if (!word.empty()) {
+            learn(word);
+        }
+    }
+}
+
+void WordChain::save(const std::string& filename) const {
+    std::ofstream file(filename);
+
+    if (!file.is_open()) {
+        return;
+    }
+
+    for (const auto& [first, wordList] : words) {
+        for (const auto& word : wordList) {
+            file << word << '\n';
+        }
+    }
 }
