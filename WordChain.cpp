@@ -24,6 +24,22 @@ std::string firstUtf8Char(const std::string& str) {
     return str.substr(0, length);
 }
 
+std::string lastUtf8Char(const std::string& str) {
+    if (str.empty()) {
+        return {};
+    }
+
+    size_t i = str.size() - 1;
+
+    // UTF-8 continuation byte:
+    // 10xxxxxx
+    while (i > 0 && (static_cast<unsigned char>(str[i]) & 0xC0) == 0x80) {
+        --i;
+    }
+
+    return str.substr(i);
+}
+
 void WordChain::learn(const std::string& word) {
     if (word.empty()) {
         return;
