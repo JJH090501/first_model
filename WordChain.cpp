@@ -1,5 +1,29 @@
 #include "WordChain.hpp"
 
+std::string firstUtf8Char(const std::string& str) {
+    if (str.empty()) {
+        return {};
+    }
+
+    unsigned char c = str[0];
+
+    size_t length;
+
+    if ((c & 0x80) == 0) {
+        length = 1;       // ASCII
+    } else if ((c & 0xE0) == 0xC0) {
+        length = 2;
+    } else if ((c & 0xF0) == 0xE0) {
+        length = 3;
+    } else if ((c & 0xF8) == 0xF0) {
+        length = 4;
+    } else {
+        return {};
+    }
+
+    return str.substr(0, length);
+}
+
 void WordChain::learn(const std::string& word) {
     if (word.empty()) {
         return;
