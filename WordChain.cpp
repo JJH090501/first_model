@@ -19,3 +19,19 @@ bool WordChain::knows(const std::string& word) const {
 
     return false;
 }
+
+// stub
+std::string WordChain::findNext(const std::string& word) const {
+    if (word.empty()) {
+        return {};
+    }
+
+    // 임시 구현
+    auto it = words.find(word.back());
+
+    if (it == words.end() || it->second.empty()) {
+        return {};
+    }
+
+    return it->second.front();
+}
