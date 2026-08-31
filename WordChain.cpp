@@ -7,3 +7,15 @@ void WordChain::learn(const std::string& word) {
 
     words[word[0]].push_back(word);
 }
+
+bool WordChain::knows(const std::string& word) const {
+    for (const auto& [_, list] : words) {
+        for (const auto& known : list) {
+            if (known == word) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
