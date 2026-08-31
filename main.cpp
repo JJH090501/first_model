@@ -6,11 +6,7 @@
 int main() {
     WordChain ai;
 
-    // AI에게 단어를 가르친다.
-    ai.learn("사과");
-    ai.learn("과자");
-    ai.learn("자동차");
-    ai.learn("차표");
+    ai.load("words.txt");
 
     std::string word;
 
@@ -19,6 +15,7 @@ int main() {
         std::cin >> word;
 
         if (word == "/quit") {
+            ai.save("words.txt");
             break;
         }
 
