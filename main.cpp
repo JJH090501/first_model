@@ -1,11 +1,16 @@
 #include <iostream>
+#include <string>
+
 #include "WordChain.hpp"
 
 int main() {
     WordChain ai;
 
-    std::cout << "끝말잇기 AI\n";
-    std::cout << "단어를 입력하세요. /quit으로 종료\n\n";
+    // AI에게 단어를 가르친다.
+    ai.learn("사과");
+    ai.learn("과자");
+    ai.learn("자동차");
+    ai.learn("차표");
 
     std::string word;
 
@@ -17,13 +22,25 @@ int main() {
             break;
         }
 
-        if (!ai.knows(word)) {
-            std::cout << "AI: 나는 아직 \"" << word << "\"를 몰라.\n";
-            std::cout << "AI에게 이 단어를 가르쳐 주세요.\n";
-            ai.learn(word);
-            continue;
-        }
+        std::string next = ai.findNext(word);
 
-        std::cout << "AI: 배운 단어야!\n";
+        if (next.empty()) {
+            std::cout << "AI: \"" << word
+                      << "\" 다음 단어를 모르겠어.\n";
+
+            std::cout << "AI에게 단어를 가르쳐 주세요: ";
+
+            std::string learned;
+            std::cin >> learned;
+
+            ai.learn(learned);
+
+            std::cout << "AI: \"" << learned
+                      << "\"를 배웠어!\n";
+        } else {
+            std::cout << "AI: " << next << '\n';
+        }
     }
+
+    return 0;
 }
