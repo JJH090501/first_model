@@ -6,7 +6,6 @@
 
 class WordChain {
 private:
-    // 마지막 글자 → 그 글자로 시작하는 단어들
     std::unordered_map<std::string, std::vector<std::string>> words;
 
 public:
@@ -15,4 +14,8 @@ public:
     std::string findNext(const std::string& word) const;
 
     bool knows(const std::string& word) const;
+
+    void load(const std::string& filename);
+
+    void save(const std::string& filename) const;
 };
