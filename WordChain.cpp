@@ -1,5 +1,7 @@
 #include "WordChain.hpp"
 
+#include <string>
+
 std::string firstUtf8Char(const std::string& str) {
     if (str.empty()) {
         return {};
@@ -10,7 +12,7 @@ std::string firstUtf8Char(const std::string& str) {
     size_t length;
 
     if ((c & 0x80) == 0) {
-        length = 1;       // ASCII
+        length = 1;
     } else if ((c & 0xE0) == 0xC0) {
         length = 2;
     } else if ((c & 0xF0) == 0xE0) {
@@ -31,9 +33,10 @@ std::string lastUtf8Char(const std::string& str) {
 
     size_t i = str.size() - 1;
 
-    // UTF-8 continuation byte:
-    // 10xxxxxx
-    while (i > 0 && (static_cast<unsigned char>(str[i]) & 0xC0) == 0x80) {
+    while (
+        i > 0 &&
+        (static_cast<unsigned char>(str[i]) & 0xC0) == 0x80
+    ) {
         --i;
     }
 
@@ -45,31 +48,39 @@ void WordChain::learn(const std::string& word) {
         return;
     }
 
-    words[word[0]].push_back(word);
+    std::string first = firstUtf8Char(word);
+
+    words[first].push_back(word);
 }
 
 bool WordChain::knows(const std::string& word) const {
-    for (const auto& [_, list] : words) {
-        for (const auto& known : list) {
-            if (known == word) {
-                return true;
-            }
+    std::string first = firstUtf8Char(word);
+
+    auto it = words.find(first);
+
+    if (it == words.end()) {
+        return false;
+    }
+
+    for (const auto& known : it->second) {
+        if (known == word) {
+            return true;
         }
     }
 
     return false;
 }
 
-// stub
 std::string WordChain::findNext(const std::string& word) const {
-    if (word.empty()) {
+    std::string last = lastUtf8Char(word);
+
+    auto it = words.find(last);
+
+    if (it == words.end()) {
         return {};
     }
 
-    // 임시 구현
-    auto it = words.find(word.back());
-
-    if (it == words.end() || it->second.empty()) {
+    if (it->second.empty()) {
         return {};
     }
 
